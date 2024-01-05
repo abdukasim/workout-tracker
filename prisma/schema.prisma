@@ -9,3 +9,92 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now())
+  username  String           @unique
+  email     String           @unique
+  password  String
+  workouts  Workout[]
+  sessions  WorkoutSession[]
+  progress  Progress[]
+}
+
+model Workout {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  name             String            @db.VarChar(255)
+  userId           String
+  user             User              @relation(fields: [userId], references: [id])
+  exerciseRoutines ExerciseRoutine[]
+
+  sessions WorkoutSession[]
+}
+
+model Exercise {
+  id               String            @id @default(uuid())
+  name             String            @db.VarChar(255)
+  exerciseRoutines ExerciseRoutine[]
+  sessionExercises SessionExercise[]
+  progress         Progress[]
+}
+
+model ExerciseRoutine {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  sets   Int
+  reps   Int
+  weight Decimal
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  workoutId String
+  workout   Workout @relation(fields: [workoutId], references: [id])
+}
+
+model WorkoutSession {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  sessionDate DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  workoutId String
+  workout   Workout?          @relation(fields: [workoutId], references: [id])
+  exercises SessionExercise[]
+}
+
+model SessionExercise {
+  id String @id @default(uuid())
+
+  sessionId String
+  session   WorkoutSession @relation(fields: [sessionId], references: [id])
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  setsCompleted Int
+  repsCompleted Int
+  weightUsed    Decimal
+}
+
+model Progress {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  date   DateTime
+  weight Decimal
+  reps   Int
+  sets   Int
+}
