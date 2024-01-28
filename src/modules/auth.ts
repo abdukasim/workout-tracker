@@ -1,11 +1,8 @@
 import jwt, { Jwt, JwtPayload } from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { User } from ".prisma/client";
-import { Request, Response, NextFunction } from "express";
-
-interface CustomUserRequest extends Request {
-  user?: any;
-}
+import { Response, NextFunction } from "express";
+import { CustomUserRequest } from "../types/user";
 
 export const createJWT = (user: User) => {
   const token = jwt.sign(
