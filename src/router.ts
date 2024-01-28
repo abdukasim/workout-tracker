@@ -1,4 +1,9 @@
 import { Router } from "express";
+import {
+  createExercise,
+  getAllExercises,
+  getExercise,
+} from "./handlers/exercise";
 
 const router = Router();
 
@@ -10,11 +15,11 @@ router.put("/workout/:id", () => {});
 router.delete("/workout/:id", () => {});
 
 // exercise routes
-router.get("/exercise", () => {});
-router.get("/exercise/:id", () => {});
-router.post("/exercise", () => {});
-router.put("/exercise/:id", () => {});
-router.delete("/exercise/:id", () => {});
+router.get("/exercise", getAllExercises);
+router.get("/exercise/:id", getExercise);
+router.post("/exercise", createExercise);
+// router.put("/exercise/:id", () => {});
+// router.delete("/exercise/:id", () => {});
 
 // router.get("/workout", () => {});
 // router.get("/workout/:id", () => {});
