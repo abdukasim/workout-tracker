@@ -4,11 +4,12 @@ import {
   getAllExercises,
   getExercise,
 } from "./handlers/exercise";
+import { createWorkout } from "./handlers/workout";
 
 const router = Router();
 
 // workout routes
-router.get("/workout", () => {});
+router.post("/workout", createWorkout);
 router.get("/workout/:id", () => {});
 router.post("/workout", () => {});
 router.put("/workout/:id", () => {});
@@ -23,7 +24,6 @@ router.post("/exercise", createExercise);
 
 // router.get("/workout", () => {});
 // router.get("/workout/:id", () => {});
-// router.post("/workout", () => {});
 // router.put("/workout/:id", () => {});
 // router.delete("/workout/:id", () => {});
 
