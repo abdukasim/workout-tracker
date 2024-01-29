@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import router from "./router";
 import { createNewUser, signin } from "./handlers/user";
+import { protect } from "./modules/auth";
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("workout tracker app");
 });
 
-app.use("/api", router);
+app.use("/api", protect, router);
 
 app.post("/user", createNewUser);
 app.post("/signin", signin);
